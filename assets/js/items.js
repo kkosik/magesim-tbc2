@@ -403,7 +403,7 @@ var equip = {
         { id: 23062, title: "Frostfire Ring", int: 10, sp: 30, crit: 14 },
         { id: 23031, title: "Band of the Inevitable", sp: 36, hit: 8 },
         { id: 28555, title: "Seal of the Exorcist", sp: 28, hit: 12},
-        { id: 28555, title: "Ring of the Eternal Flame", sp: 34, crit: 14},
+        { id: 23237, title: "Ring of the Eternal Flame", sp: 34, crit: 14},
     ],
     trinket: [
         { id: ids.SORCERERS_ALCHEMIST_STONE, title: "Sorcerer's Alchemist Stone", sp: 63, phase: 5 },
