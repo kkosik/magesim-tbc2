@@ -403,6 +403,7 @@ var equip = {
         { id: 23062, title: "Frostfire Ring", int: 10, sp: 30, crit: 14 },
         { id: 23031, title: "Band of the Inevitable", sp: 36, hit: 8 },
         { id: 28555, title: "Seal of the Exorcist", sp: 28, hit: 12},
+        { id: 28555, title: "Ring of the Eternal Flame", sp: 34, crit: 14},
     ],
     trinket: [
         { id: ids.SORCERERS_ALCHEMIST_STONE, title: "Sorcerer's Alchemist Stone", sp: 63, phase: 5 },
@@ -462,6 +463,7 @@ var gems = [
     { id: 28118, title: "Runed Ornate Ruby", color: "r", sp: 12, unique: true },
     { id: 32196, title: "Runed Crimson Spinel", color: "r", sp: 12, phase: 3 },
     { id: ids.RUNED_LIVING_RUBY, title: "Runed Living Ruby", color: "r", sp: 9 },
+    { id: 23096, title: "Runed Blood Garnet", color: "r", sp: 7 },				
     { id: 35760, title: "Reckless Pyrestone", color: "o", sp: 6, haste: 5, phase: 5 },
     { id: 32221, title: "Veiled Pyrestone", color: "o", sp: 6, hit: 5, phase: 3 },
     { id: 32218, title: "Potent Pyrestone", color: "o", sp: 6, crit: 5, phase: 3 },
