@@ -1310,6 +1310,11 @@ var equip = {
       sp: 4
     }
   }, {
+    id: 28726,
+    title: "Mantle of the Mind Flayer",
+    "int": 29,
+    sp: 35
+  }, {
     id: 32047,
     title: "Merciless Gladiator's Silk Amice",
     "int": 15,
@@ -69734,9 +69739,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.number",
                         value: _vm.custom_item.mp5,
-                        expression: "custom_item.mp5"
+                        expression: "custom_item.mp5",
+                        modifiers: { number: true }
                       }
                     ],
                     attrs: { type: "number" },
@@ -69746,7 +69752,14 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.custom_item, "mp5", $event.target.value)
+                        _vm.$set(
+                          _vm.custom_item,
+                          "mp5",
+                          _vm._n($event.target.value)
+                        )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   })
@@ -69759,9 +69772,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.number",
                         value: _vm.custom_item.sockets,
-                        expression: "custom_item.sockets"
+                        expression: "custom_item.sockets",
+                        modifiers: { number: true }
                       }
                     ],
                     attrs: { type: "number" },
@@ -69774,8 +69788,11 @@ var render = function() {
                         _vm.$set(
                           _vm.custom_item,
                           "sockets",
-                          $event.target.value
+                          _vm._n($event.target.value)
                         )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   })
