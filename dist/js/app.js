@@ -3451,6 +3451,10 @@ var enchants = {
     id: 46533,
     title: "Major Spellpower",
     sp: 40
+  }, {
+    id: 46532,
+    title: "Major Intellect",
+    "int": 30
   }],
   head: [{
     id: 35447,
@@ -4840,6 +4844,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4900,6 +4923,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       eye_of_the_night: false,
       chain_of_the_twilight_owl: false,
       jade_pendant_of_blasting: false,
+      scroll_of_spirit: false,
+      kreegs: false,
       tirisfal_2set: true,
       tirisfal_4set: true,
       tempest_2set: false,
@@ -5427,7 +5452,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM) stats.intellect += 65;
-      if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT) stats.spirit += 20; // Attribute multipliers
+      if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT) stats.spirit += 20;
+      if (this.config.scroll_of_spirit) stats.spirit += 30;
+
+      if (this.config.kreegs) {
+        stats.spirit += 25;
+        stats.intellect -= 5;
+      } // Attribute multipliers
+
 
       if (x = this.hasTalent("arcane_mind")) stats.intellect *= 1.0 + x * 0.03;
       if (this.config.race == this.races.RACE_GNOME) stats.intellect *= 1.05;
@@ -5641,6 +5673,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.isSpecialItem(this.equipped.trinket1)) this.config.trinket1 = this.equipped.trinket1;
       if (this.isSpecialItem(this.equipped.trinket2)) this.config.trinket2 = this.equipped.trinket2;
       if (this.metaGem() && this.isSpecialItem(this.metaGem().id) && this.isMetaGemActive()) this.config.meta_gem = this.metaGem().id;
+    },
+    openItem: function openItem(item) {
+      var a = document.createElement("a");
+      a.href = this.itemUrl(item.id);
+      a.target = "_blank";
+      a.click();
     },
     itemUrl: function itemUrl(id) {
       if (_typeof(id) == "object") id = id.id;
@@ -63994,7 +64032,7 @@ var render = function() {
                                 },
                                 on: {
                                   click: function($event) {
-                                    $event.stopPropagation()
+                                    $event.preventDefault()
                                   }
                                 }
                               },
@@ -64004,6 +64042,26 @@ var render = function() {
                                     _vm._s(item.title) +
                                     "\n                                        "
                                 )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "link",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.openItem(item)
+                                  }
+                                }
+                              },
+                              [
+                                _c("span", { staticClass: "material-icons" }, [
+                                  _vm._v(
+                                    "\n                                                \n                                            "
+                                  )
+                                ])
                               ]
                             )
                           ]),
@@ -64914,7 +64972,7 @@ var render = function() {
                                   ),
                                   _c("br"),
                                   _vm._v(
-                                    "\n                                        At 50% haste you will reach GCD cap of 1.0 seconds.\n                                    "
+                                    "\n                                        At 100% haste you will reach GCD cap of 0.75 seconds.\n                                    "
                                   )
                                 ])
                               ],
@@ -65160,7 +65218,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("help", [
                             _vm._v(
-                              "Enables the GCD to go below 1.0s with haste"
+                              "Enables the GCD to go below 0.75s with haste"
                             )
                           ])
                         ],
@@ -66044,6 +66102,9 @@ var render = function() {
                             : _vm.config.divine_spirit
                         },
                         on: {
+                          input: function($event) {
+                            return _vm.dontStack($event, "scroll_of_spirit")
+                          },
                           change: function($event) {
                             var $$a = _vm.config.divine_spirit,
                               $$el = $event.target,
@@ -67500,6 +67561,138 @@ var render = function() {
                           [_vm._v("Flame Cap")]
                         )
                       ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c(
+                      "label",
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.config.scroll_of_spirit,
+                              expression: "config.scroll_of_spirit"
+                            }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(_vm.config.scroll_of_spirit)
+                              ? _vm._i(_vm.config.scroll_of_spirit, null) > -1
+                              : _vm.config.scroll_of_spirit
+                          },
+                          on: {
+                            input: function($event) {
+                              return _vm.dontStack($event, [
+                                "divine_spirit",
+                                "improved_divine_spirit"
+                              ])
+                            },
+                            change: function($event) {
+                              var $$a = _vm.config.scroll_of_spirit,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "scroll_of_spirit",
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "scroll_of_spirit",
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(_vm.config, "scroll_of_spirit", $$c)
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Scroll of Spirit V")]),
+                        _vm._v(" "),
+                        _c("help", [
+                          _vm._v(
+                            "Does not stack with Divine Spirit (30 spirit)"
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c(
+                      "label",
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.config.kreegs,
+                              expression: "config.kreegs"
+                            }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(_vm.config.kreegs)
+                              ? _vm._i(_vm.config.kreegs, null) > -1
+                              : _vm.config.kreegs
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.config.kreegs,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "kreegs",
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "kreegs",
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(_vm.config, "kreegs", $$c)
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Kreeg's Stout Beatdown")]),
+                        _vm._v(" "),
+                        _c("help", [
+                          _vm._v(
+                            "Stacks with other food buffs (25 spirit, -5 int)"
+                          )
+                        ])
+                      ],
+                      1
                     )
                   ])
                 ]),

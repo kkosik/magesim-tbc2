@@ -226,9 +226,14 @@
                                             </span>
                                         </td>
                                         <td class="title">
-                                            <a :href="itemUrl(item)" :class="['quality-'+$get(item, 'q', 'epic')]" target="_blank" @click.stop>
+                                            <a :href="itemUrl(item)" :class="['quality-'+$get(item, 'q', 'epic')]" target="_blank" @click.prevent>
                                                 {{ item.title }}
                                             </a>
+                                            <span class="link" @click.stop="openItem(item)">
+                                                <span class="material-icons">
+                                                    &#xe895;
+                                                </span>
+                                            </span>
                                         </td>
                                         <th v-if="hasComparisons">
                                             {{ comparisonDps(item) }}
@@ -463,7 +468,7 @@
                                         <span>Stop Arcane Blast at haste %</span>
                                         <help>
                                             This will cast frostbolt/fireball when above a certain haste %.<br>
-                                            At 50% haste you will reach GCD cap of 1.0 seconds.
+                                            At 100% haste you will reach GCD cap of 0.75 seconds.
                                         </help>
                                     </label>
                                     <input type="text" v-model.number="config.ab_haste_stop">
@@ -495,7 +500,7 @@
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.gcd_unlocked">
                                     <span>Unlock GCD</span>
-                                    <help>Enables the GCD to go below 1.0s with haste</help>
+                                    <help>Enables the GCD to go below 0.75s with haste</help>
                                 </label>
                             </div>
                             <div class="form-item">
@@ -575,7 +580,7 @@
                                 <label><input type="checkbox" v-model="config.molten_armor" @input="dontStack($event, 'mage_armor')"> <span>Molten Armor</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.divine_spirit"> <span>Divine Spirit</span></label>
+                                <label><input type="checkbox" v-model="config.divine_spirit" @input="dontStack($event, 'scroll_of_spirit')"> <span>Divine Spirit</span></label>
                             </div>
                             <div class="form-item" v-if="config.divine_spirit">
                                 <label><input type="checkbox" v-model="config.improved_divine_spirit"> <span>Imp. Divine Spirit</span></label>
@@ -709,6 +714,20 @@
                                     <option :value="conjureds.CONJURED_MANA_GEM">Mana Emerald</option>
                                     <option :value="conjureds.CONJURED_FLAME_CAP">Flame Cap</option>
                                 </select>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" v-model="config.scroll_of_spirit" @input="dontStack($event, ['divine_spirit', 'improved_divine_spirit'])">
+                                    <span>Scroll of Spirit V</span>
+                                    <help>Does not stack with Divine Spirit (30 spirit)</help>
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" v-model="config.kreegs">
+                                    <span>Kreeg's Stout Beatdown</span>
+                                    <help>Stacks with other food buffs (25 spirit, -5 int)</help>
+                                </label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -1126,6 +1145,8 @@
                 eye_of_the_night: false,
                 chain_of_the_twilight_owl: false,
                 jade_pendant_of_blasting: false,
+                scroll_of_spirit: false,
+                kreegs: false,
 
                 tirisfal_2set: true,
                 tirisfal_4set: true,
@@ -1648,6 +1669,12 @@
                     stats.intellect+= 65;
                 if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT)
                     stats.spirit+= 20;
+                if (this.config.scroll_of_spirit)
+                    stats.spirit+= 30;
+                if (this.config.kreegs) {
+                    stats.spirit+= 25;
+                    stats.intellect-= 5;
+                }
 
                 // Attribute multipliers
                 if (x = this.hasTalent("arcane_mind"))
@@ -1912,6 +1939,13 @@
                     this.config.trinket2 = this.equipped.trinket2;
                 if (this.metaGem() && this.isSpecialItem(this.metaGem().id) && this.isMetaGemActive())
                     this.config.meta_gem = this.metaGem().id;
+            },
+
+            openItem(item) {
+                var a = document.createElement("a");
+                a.href = this.itemUrl(item.id);
+                a.target = "_blank";
+                a.click();
             },
 
             itemUrl(id) {
